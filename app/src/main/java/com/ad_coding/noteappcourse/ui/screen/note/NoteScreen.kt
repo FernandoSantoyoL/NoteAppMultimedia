@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ad_coding.noteappcourse.componentes.AudioRecorderButton
 import com.ad_coding.noteappcourse.componentes.BarraBuscar
 import com.ad_coding.noteappcourse.componentes.BotonD
 import com.ad_coding.noteappcourse.componentes.CameraButton
@@ -89,8 +90,10 @@ fun NoteScreen(
             ) {
                 MultimediaPicker()
                 CameraButton()
+                DatePickerFecha()
             }
-            DatePickerFecha()
+
+            //AudioRecorderButton()
             OutlinedTextField(
                 value = state.title,
                 onValueChange = {

@@ -1,13 +1,9 @@
 package com.ad_coding.noteappcourse.componentes
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
@@ -33,8 +29,14 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun BarraBuscar(){ var text by rememberSaveable { mutableStateOf("") }
+fun BarraBuscar() {
+    var text by rememberSaveable { mutableStateOf("") }
     var active by rememberSaveable { mutableStateOf(false) }
+
+    // Datos de ejemplo para buscar
+    val datosEjemplo = listOf("Apple", "Burro", "Nota3", "Nota4", "Nota5", "Nota6", "Nota6")
+    // Filtrar los datos basados en el texto actual
+    val resultadosFiltrados = datosEjemplo.filter { it.contains(text, ignoreCase = true) }
 
     Box(Modifier.fillMaxWidth().semantics { isTraversalGroup = true }) {
         SearchBar(
@@ -52,15 +54,15 @@ fun BarraBuscar(){ var text by rememberSaveable { mutableStateOf("") }
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
             trailingIcon = { Icon(Icons.Default.MoreVert, contentDescription = null) },
         ) {
-            repeat(4) { idx ->
-                val resultText = "Suggestion $idx"
+            // Mostrar los resultados filtrados
+            resultadosFiltrados.forEach { resultado ->
                 ListItem(
-                    headlineContent = { Text(resultText) },
+                    headlineContent = { Text(resultado) },
                     supportingContent = { Text("Additional info") },
                     leadingContent = { Icon(Icons.Filled.Star, contentDescription = null) },
                     modifier = Modifier
                         .clickable {
-                            text = resultText
+                            text = resultado
                             active = false
                         }
                         .fillMaxWidth()
@@ -69,4 +71,4 @@ fun BarraBuscar(){ var text by rememberSaveable { mutableStateOf("") }
             }
         }
     }
-     }
+}

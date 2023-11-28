@@ -1,5 +1,4 @@
 package com.ad_coding.noteappcourse.componentes
-
 import android.graphics.Bitmap
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,6 +15,8 @@ import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.ui.tooling.preview.Preview
+
+
 
 @Composable
 fun CameraButton() {
@@ -38,6 +39,8 @@ fun CameraButton() {
         // Mostrar la imagen si está disponible
         imageBitmap?.let { bitmap ->
             Image(bitmap = bitmap.asImageBitmap(), contentDescription = "Imagen capturada")
+
+
         }
     }
 }

@@ -93,7 +93,7 @@ fun NoteScreen(
                 DatePickerFecha()
             }
 
-            //AudioRecorderButton()
+            AudioRecorderButton()
             OutlinedTextField(
                 value = state.title,
                 onValueChange = {

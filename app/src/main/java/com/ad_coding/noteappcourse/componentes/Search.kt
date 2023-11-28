@@ -34,7 +34,7 @@ fun BarraBuscar() {
     var active by rememberSaveable { mutableStateOf(false) }
 
     // Datos de ejemplo para buscar
-    val datosEjemplo = listOf("Apple", "Burro", "Nota3", "Nota4", "Nota5", "Nota6", "Nota6")
+    val datosEjemplo = listOf("Apple", "Burro", "Nota3", "Nota4", "Nota5", "Nota6", "Nota7")
     // Filtrar los datos basados en el texto actual
     val resultadosFiltrados = datosEjemplo.filter { it.contains(text, ignoreCase = true) }
 

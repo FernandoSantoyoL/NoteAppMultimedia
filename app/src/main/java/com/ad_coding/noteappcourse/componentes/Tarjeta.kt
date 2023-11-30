@@ -1,11 +1,13 @@
 package com.ad_coding.noteappcourse.componentes
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -17,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ad_coding.noteappcourse.domain.model.Note
+import com.ad_coding.noteappcourse.ui.theme.*
 
 
 @Composable
@@ -27,6 +30,7 @@ fun NotaItem(Nota : Note,
         modifier = Modifier.fillMaxWidth()
             .padding(5.dp)
             .clickable(onClick = { onNoteClick(Nota) })
+
     ){
         Text(
             text = Nota.title,

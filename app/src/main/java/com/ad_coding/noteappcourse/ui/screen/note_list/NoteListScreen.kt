@@ -24,8 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.text.style.TextOverflow
+
 import androidx.compose.ui.unit.dp
 import com.ad_coding.noteappcourse.componentes.BarraBuscar
 import com.ad_coding.noteappcourse.componentes.BotonD
@@ -43,7 +42,7 @@ fun NoteListScreen(
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = onAddNoteClick
+                onClick = onAddNoteClick,
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Add,
@@ -66,10 +65,10 @@ fun NoteListScreen(
                 )
             ) {
                 items(noteList) { note ->
-                    NotaItem(Nota = note, onNoteClick = onNoteClick )
+                    NotaItem(Nota = note, onNoteClick = onNoteClick)
 
                 }
             }
         }
-        }
+    }
 }

@@ -24,9 +24,9 @@ fun DatePickerFecha() {
 
     Column {
         Button(onClick = {
-            // Mostrar DatePickerDialog
+
             DatePickerDialog(context, { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-                // Actualizar la fecha seleccionada
+
                 date = "${dayOfMonth}/${month + 1}/${year}"
             }, year, month, day).show()
         }) {
@@ -34,7 +34,6 @@ fun DatePickerFecha() {
             Icon(Icons.Filled.CalendarToday, contentDescription = "Seleccionar Fecha")
         }
 
-        // Mostrar la fecha seleccionada
-       // Text(text = "Fecha seleccionada: $date")
+       Text(text = "Fecha seleccionada: $date")
     }
 }

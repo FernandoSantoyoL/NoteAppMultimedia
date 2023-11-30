@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Delete
@@ -48,9 +49,9 @@ fun NoteScreen(
                 title = { Text(text = "NUEVO") },
                 navigationIcon = {
                     IconButton(
-                        onClick = {
-                            onEvent(NoteEvent.NavigateBack)
-                        }
+                        onClick = { onEvent(NoteEvent.NavigateBack) },
+                        // Icon size adjusted
+                        modifier = Modifier.size(24.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Rounded.ArrowBack,
@@ -60,9 +61,9 @@ fun NoteScreen(
                 },
                 actions = {
                     IconButton(
-                        onClick = {
-                            onEvent(NoteEvent.DeleteNote)
-                        }
+                        onClick = { onEvent(NoteEvent.DeleteNote) },
+                        // Icon size adjusted
+                        modifier = Modifier.size(24.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Rounded.Delete,
@@ -77,53 +78,45 @@ fun NoteScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(
-                    horizontal = 15.dp,
-                    vertical = 15.dp
-                ),
-            //     verticalArrangement = Arrangement.spacedBy(10.dp, 0.dp)
+                .padding(horizontal = 15.dp, vertical = 15.dp),
         ) {
             BotonD()
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
+
                 MultimediaPicker()
                 CameraButton()
                 DatePickerFecha()
             }
-
             AudioRecorderButton()
+
+
             OutlinedTextField(
                 value = state.title,
-                onValueChange = {
-                    onEvent(NoteEvent.TitleChange(it))
-                },
-                placeholder = {
-                    Text(text = "TITULO")
-                }, modifier = Modifier.fillMaxWidth()
+                onValueChange = { onEvent(NoteEvent.TitleChange(it)) },
+                placeholder = { Text(text = "TÍTULO") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
             )
-
             OutlinedTextField(
                 value = state.content,
-                onValueChange = {
-                    onEvent(NoteEvent.ContentChange(it))
-                },
-                placeholder = {
-                    Text(text = "CONTENIDO")
-                }, modifier = Modifier
-                    .height(150.dp)
+                onValueChange = { onEvent(NoteEvent.ContentChange(it)) },
+                placeholder = { Text(text = "CONTENIDO") },
+                modifier = Modifier
                     .fillMaxWidth()
+                    .height(200.dp)
             )
 
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
+
                 Button(
-                    onClick = {
-                        onEvent(NoteEvent.Save)
-                    },
+                    onClick = { onEvent(NoteEvent.Save) },
                     modifier = Modifier.fillMaxWidth(0.5f)
                 ) {
                     Text(text = "GUARDAR")

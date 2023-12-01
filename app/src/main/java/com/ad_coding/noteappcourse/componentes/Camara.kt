@@ -25,7 +25,7 @@ fun CameraButton() {
     val openCamera = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
     ) { bitmap ->
-        // Actualiza el estado con la imagen capturada
+
         imageBitmap = bitmap
     }
 

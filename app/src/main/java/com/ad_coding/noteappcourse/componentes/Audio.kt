@@ -77,7 +77,7 @@ fun AudioRecorderButton() {
             }
             mediaPlayer.setOnCompletionListener {
                 isPlaying = false
-                isRecordingAvailable = false // Opcional: resetear después de reproducir
+               // isRecordingAvailable = false // Opcional: resetear después de reproducir
             }
         } catch (e: Exception) {
             Log.e("AudioRecorder", "Error al reproducir el audio", e)

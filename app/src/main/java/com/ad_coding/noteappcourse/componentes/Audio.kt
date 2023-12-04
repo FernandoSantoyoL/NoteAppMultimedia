@@ -1,6 +1,8 @@
 package com.ad_coding.noteappcourse.componentes
 
+
 import android.Manifest
+import android.app.Activity
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.util.Log
@@ -17,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import java.io.File
 
 @Composable
@@ -25,13 +28,17 @@ fun AudioRecorderButton() {
     var isRecording by remember { mutableStateOf(false) }
     var hasPermission by remember { mutableStateOf(false) }
     var isPlaying by remember { mutableStateOf(false) }
-    var isRecordingAvailable by remember { mutableStateOf(false) }
     val mediaRecorder = remember { MediaRecorder() }
     val mediaPlayer = MediaPlayer()
 
-    val audioFile = File(context.externalCacheDir, "test_audio.3gp")
+    var audioFiles by remember { mutableStateOf(listOf<File>()) }
+
+    val getNextAudioFile: () -> File = {
+        File(context.externalCacheDir, "audio_recording_${audioFiles.size + 1}.3gp")
+    }
 
     val startRecording = {
+        val audioFile = getNextAudioFile()
         Log.d("AudioRecorder", "Intentando iniciar la grabación")
         try {
             mediaRecorder.apply {
@@ -43,7 +50,7 @@ fun AudioRecorderButton() {
                 start()
             }
             isRecording = true
-            isRecordingAvailable = false
+            audioFiles = audioFiles + audioFile
             Log.d("AudioRecorder", "Grabación iniciada")
         } catch (e: Exception) {
             Log.e("AudioRecorder", "Error al iniciar la grabación", e)
@@ -56,17 +63,15 @@ fun AudioRecorderButton() {
             mediaRecorder.apply {
                 stop()
                 reset()
-                release()
             }
             isRecording = false
-            isRecordingAvailable = true
             Log.d("AudioRecorder", "Grabación detenida")
         } catch (e: Exception) {
             Log.e("AudioRecorder", "Error al detener la grabación", e)
         }
     }
 
-    val startPlaying = {
+    val startPlaying = { audioFile: File ->
         try {
             mediaPlayer.apply {
                 reset()
@@ -77,7 +82,6 @@ fun AudioRecorderButton() {
             }
             mediaPlayer.setOnCompletionListener {
                 isPlaying = false
-               // isRecordingAvailable = false // Opcional: resetear después de reproducir
             }
         } catch (e: Exception) {
             Log.e("AudioRecorder", "Error al reproducir el audio", e)
@@ -108,16 +112,9 @@ fun AudioRecorderButton() {
             }
         }
 
-        if (!isRecording && isRecordingAvailable) {
-            Button(onClick = {
-                if (isPlaying) {
-                    mediaPlayer.stop()
-                    isPlaying = false
-                } else {
-                    startPlaying()
-                }
-            }) {
-                Text(if (isPlaying) "Detener" else "Reproducir Grabación")
+        audioFiles.forEachIndexed { index, audioFile ->
+            Button(onClick = { startPlaying(audioFile) }) {
+                Text("Audio ${index + 1}")
             }
         }
     }
@@ -128,3 +125,5 @@ fun AudioRecorderButton() {
         }
     }
 }
+
+

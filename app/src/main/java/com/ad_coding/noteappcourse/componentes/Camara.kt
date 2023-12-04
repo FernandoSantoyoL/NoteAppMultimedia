@@ -1,4 +1,5 @@
 package com.ad_coding.noteappcourse.componentes
+
 import android.graphics.Bitmap
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,17 +17,16 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.ui.tooling.preview.Preview
 
-
-
 @Composable
 fun CameraButton() {
-    var imageBitmap by remember { mutableStateOf<Bitmap?>(null) }
+    var imageBitmaps by remember { mutableStateOf<List<Bitmap>>(listOf()) }
 
     val openCamera = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
     ) { bitmap ->
-
-        imageBitmap = bitmap
+        if (bitmap != null) {
+            imageBitmaps = imageBitmaps + bitmap
+        }
     }
 
     Column {
@@ -36,11 +36,9 @@ fun CameraButton() {
             Icon(Icons.Filled.CameraAlt, contentDescription = "Abrir cámara")
         }
 
-        // Mostrar la imagen si está disponible
-        imageBitmap?.let { bitmap ->
+        // Mostrar las imágenes si están disponibles
+        imageBitmaps.forEach { bitmap ->
             Image(bitmap = bitmap.asImageBitmap(), contentDescription = "Imagen capturada")
-
-
         }
     }
 }

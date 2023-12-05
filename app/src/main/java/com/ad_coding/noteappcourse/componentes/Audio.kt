@@ -1,15 +1,16 @@
 package com.ad_coding.noteappcourse.componentes
 
-
 import android.Manifest
-import android.app.Activity
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Button
@@ -17,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -113,8 +115,15 @@ fun AudioRecorderButton() {
         }
 
         audioFiles.forEachIndexed { index, audioFile ->
-            Button(onClick = { startPlaying(audioFile) }) {
-                Text("Audio ${index + 1}")
+            Row(modifier = Modifier.padding(vertical = 4.dp)) {
+                Button(onClick = { startPlaying(audioFile) }) {
+                    Text("Audio ${index + 1}")
+                }
+                IconButton(onClick = {
+                    audioFiles = audioFiles.filter { it != audioFile }
+                }) {
+                    Icon(Icons.Filled.Delete, contentDescription = "Eliminar Audio", tint = Color.Red)
+                }
             }
         }
     }
@@ -122,8 +131,8 @@ fun AudioRecorderButton() {
     DisposableEffect(Unit) {
         onDispose {
             mediaPlayer.release()
+            mediaRecorder.release()
         }
     }
 }
-
 

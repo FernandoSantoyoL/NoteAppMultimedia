@@ -26,11 +26,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ad_coding.noteappcourse.componentes.AudioRecorderButton
-import com.ad_coding.noteappcourse.componentes.BarraBuscar
 import com.ad_coding.noteappcourse.componentes.BotonD
 import com.ad_coding.noteappcourse.componentes.CameraButton
 import com.ad_coding.noteappcourse.componentes.DatePickerFecha
@@ -39,6 +36,7 @@ import com.ad_coding.noteappcourse.componentes.MultimediaPicker
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+
 fun NoteScreen(
     state: NoteState,
     onEvent: (NoteEvent) -> Unit,
@@ -91,8 +89,6 @@ fun NoteScreen(
                 DatePickerFecha()
             }
             AudioRecorderButton()
-
-
             OutlinedTextField(
                 value = state.title,
                 onValueChange = { onEvent(NoteEvent.TitleChange(it)) },
@@ -125,4 +121,3 @@ fun NoteScreen(
         }
     }
 }
-

@@ -32,6 +32,7 @@ fun CameraButton() {
         contract = ActivityResultContracts.TakePicturePreview()
     ) { bitmap ->
         if (bitmap != null) {
+
             imageBitmaps = imageBitmaps + bitmap
         }
     }

@@ -25,11 +25,14 @@
  import androidx.compose.ui.platform.LocalContext
  import androidx.compose.ui.unit.dp
  import coil.compose.rememberAsyncImagePainter
+ import com.ad_coding.noteappcourse.ui.screen.note.NoteEvent
 
  @Composable
- fun MultimediaPicker() {
+ fun MultimediaPicker(
+     onEvent: (NoteEvent) -> Unit,
+ ) {
      val context = LocalContext.current
-     var multimediaUris by remember { mutableStateOf<List<Uri>>(listOf()) }
+     var multimediaUris by remember { mutableStateOf<List<String>>(listOf()) }
      var selectedUri by remember { mutableStateOf<Uri?>(null) }
      var showDialogForSelection by remember { mutableStateOf(false) }
      var showDeleteDialog by remember { mutableStateOf(false) }
@@ -42,14 +45,18 @@
              // Obtener las URIs de los archivos seleccionados
              val clipData = result.data?.clipData
              if (clipData != null) {
-                 val uris = mutableListOf<Uri>()
+                 val uris = mutableListOf<String>()
                  for (i in 0 until clipData.itemCount) {
-                     uris.add(clipData.getItemAt(i).uri)
+                     uris.add(clipData.getItemAt(i).uri.toString())
+
                  }
                  multimediaUris = uris
+                 onEvent(NoteEvent.FotoCambio(multimediaUris))
+
+
              } else {
                  result.data?.data?.let { uri ->
-                     multimediaUris = listOf(uri)
+                     multimediaUris = listOf()
                  }
              }
          }
@@ -65,13 +72,13 @@
          LazyColumn(modifier = Modifier.height(150.dp)) {
              items(multimediaUris) { uri ->
                  Image(
-                     painter = rememberAsyncImagePainter(model = uri),
+                     painter = rememberAsyncImagePainter(model = Uri.parse(uri)),
                      contentDescription = null,
                      modifier = Modifier
                          .width(100.dp)
                          .height(150.dp)
                          .clickable {
-                             selectedUri = uri
+                             selectedUri = Uri.parse(uri)
                              showDeleteDialog = true
                          }
                  )
@@ -111,7 +118,7 @@
                      Button(onClick = {
                          showDeleteDialog = false
                          selectedUri?.let { uri ->
-                             multimediaUris = multimediaUris.filter { it != uri }
+                             multimediaUris = multimediaUris.filter {  Uri.parse(it) != uri }
                          }
                      }) {
                          Text("Eliminar")

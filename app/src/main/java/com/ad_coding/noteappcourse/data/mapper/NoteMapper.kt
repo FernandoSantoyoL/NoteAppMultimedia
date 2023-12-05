@@ -4,9 +4,9 @@ import com.ad_coding.noteappcourse.data.local.entity.NoteEntity
 import com.ad_coding.noteappcourse.domain.model.Note
 
 fun NoteEntity.asExternalModel(): Note = Note(
-    id, title, content
+    id, title, content,tipo,fecha,foto
 )
 
 fun Note.toEntity(): NoteEntity = NoteEntity(
-    id, title, content
+    id, title, content,tipo, fecha, foto
 )

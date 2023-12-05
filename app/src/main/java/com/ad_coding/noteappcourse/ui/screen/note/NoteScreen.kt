@@ -83,10 +83,9 @@ fun NoteScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-
-                MultimediaPicker()
+                MultimediaPicker(onEvent)
                 CameraButton()
-                DatePickerFecha()
+                DatePickerFecha(onEvent)
             }
             AudioRecorderButton()
             OutlinedTextField(

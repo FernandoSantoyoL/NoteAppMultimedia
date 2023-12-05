@@ -16,10 +16,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import com.ad_coding.noteappcourse.ui.screen.note.NoteEvent
 import java.util.*
 
 @Composable
-fun DatePickerFecha() {
+fun DatePickerFecha(
+    onEvent: (NoteEvent) -> Unit,
+) {
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR)
@@ -33,11 +36,13 @@ fun DatePickerFecha() {
                 date = "${selectedDayOfMonth}/${selectedMonth + 1}/$selectedYear"
                 scheduleAlarm(context, selectedYear, selectedMonth, selectedDayOfMonth)
             }, year, month, day).show()
+
         }) {
-            Text("Seleccionar Fecha")
+            Text("Fecha")
         }
 
-        Text(text = "Fecha seleccionada: $date")
+        Text(text = "Fecha: $date")
+        onEvent(NoteEvent.FechaCambio(date))
     }
 }
 

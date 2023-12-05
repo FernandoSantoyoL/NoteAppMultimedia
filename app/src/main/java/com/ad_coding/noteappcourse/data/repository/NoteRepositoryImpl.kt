@@ -1,6 +1,7 @@
 package com.ad_coding.noteappcourse.data.repository
 
 import com.ad_coding.noteappcourse.data.local.dao.NoteDao
+import com.ad_coding.noteappcourse.data.local.entity.Fotos
 import com.ad_coding.noteappcourse.data.mapper.asExternalModel
 import com.ad_coding.noteappcourse.data.mapper.toEntity
 import com.ad_coding.noteappcourse.domain.model.Note
@@ -20,6 +21,9 @@ class NoteRepositoryImpl(
                 }
             }
     }
+    //override suspend fun getAllfotos( id: Int): Flow<List<String>> {
+       // return dao.getAllfotos(id)
+    //}
 
     override suspend fun getNoteById(id: Int): Note? {
         return dao.getNoteById(id)?.asExternalModel()
@@ -28,6 +32,9 @@ class NoteRepositoryImpl(
     override suspend fun insertNote(note: Note) {
         dao.insertNote(note.toEntity())
     }
+    //override suspend fun insertFoto(id: Int,Foto: String) {
+      //  dao.insertFoto(id,Foto)
+    //}
 
     override suspend fun deleteNote(note: Note) {
         dao.deleteNote(note.toEntity())

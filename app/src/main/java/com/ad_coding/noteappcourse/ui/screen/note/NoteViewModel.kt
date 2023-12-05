@@ -1,5 +1,6 @@
 package com.ad_coding.noteappcourse.ui.screen.note
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -42,7 +43,10 @@ class NoteViewModel @Inject constructor(
                         screenState.copy(
                             id = note.id,
                             title = note.title,
-                            content = note.content
+                            content = note.content,
+                            tipo = note.tipo,
+                            fecha= note.fecha,
+                            foto = note.foto
                         )
                     }
                 }
@@ -51,11 +55,29 @@ class NoteViewModel @Inject constructor(
     }
 
     fun onEvent(event: NoteEvent) {
+        var listaU : List<String> = listOf()
         when (event) {
             is NoteEvent.ContentChange -> {
                 _state.update {
                     it.copy(
                         content = event.value
+                    )
+                }
+            }
+            is NoteEvent.TipoCambio -> {
+            _state.update {
+                it.copy(
+                    tipo = event.value
+                )
+            }
+        }
+            is NoteEvent.FotoCambio -> {
+                listaU = event.value
+            }
+            is NoteEvent.FechaCambio -> {
+                _state.update {
+                    it.copy(
+                        fecha = event.value
                     )
                 }
             }
@@ -75,13 +97,21 @@ class NoteViewModel @Inject constructor(
                     val note = Note(
                         id = state.id,
                         title = state.title,
-                        content = state.content
+                        content = state.content,
+                        tipo = state.tipo,
+                        fecha= state.fecha,
+                        foto = state.foto
                     )
                     if (state.id == null) {
-                        repository.insertNote(note)
+                        val id = repository.insertNote(note)
+                        //listaU.forEach{uri->
+                          //  repository.insertFoto(id,uri)
+                        //}
+                        Log.d("-------------------------","SI JALOOO"+id)
                     } else {
                         repository.updateNote(note)
                     }
+
                     sendEvent(UiEvent.NavigateBack)
                 }
             }
@@ -92,7 +122,10 @@ class NoteViewModel @Inject constructor(
                     val note = Note(
                         id = state.id,
                         title = state.title,
-                        content = state.content
+                        content = state.content,
+                        tipo = state.tipo,
+                        fecha= state.fecha,
+                        foto = state.foto
                     )
                     repository.deleteNote(note)
                 }

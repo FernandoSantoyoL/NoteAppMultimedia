@@ -3,6 +3,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,11 +28,21 @@ fun NotaItem(Nota : Note,
              onNoteClick: (Note) -> Unit,
 ){
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(5.dp)
             .clickable(onClick = { onNoteClick(Nota) })
 
     ){
+        Row {
+            Text(
+                text = Nota.fecha,
+                modifier = Modifier
+                    .padding(16.dp),
+                textAlign = TextAlign.Start,
+
+                )
+        }
         Text(
             text = Nota.title,
             modifier = Modifier

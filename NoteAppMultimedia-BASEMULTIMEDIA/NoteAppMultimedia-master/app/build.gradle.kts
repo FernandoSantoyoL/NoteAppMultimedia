@@ -52,7 +52,8 @@ android {
 }
 
 dependencies {
-
+    // ExoPlayer
+    implementation("com.google.android.exoplayer:exoplayer:2.15.1")
     //Coil
     implementation("io.coil-kt:coil-compose:2.5.0")
 
@@ -63,6 +64,7 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.44")
     implementation("androidx.leanback:leanback:1.0.0")
     implementation("com.google.android.material:material:1.10.0")
+    implementation("androidx.media3:media3-ui:1.2.0")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
     implementation("androidx.hilt:hilt-work:1.0.0")
     kapt("androidx.hilt:hilt-compiler:1.0.0")

@@ -5,5 +5,5 @@ import androidx.lifecycle.ViewModel
 
 class EstadoFecha:ViewModel() {
 
-    var estadoFecha by mutableStateOf("")
+    var estadoFecha by mutableStateOf("1")
 }

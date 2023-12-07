@@ -9,5 +9,6 @@ data class NoteState(
     val tipo : String = "",
     val fecha : String = "",
     val foto : String = "",
-    val fotoS : List<String> = listOf()
+    val fotoS : List<String> = listOf(),
+    val fotoC : List<String> = listOf()
 )

@@ -75,7 +75,6 @@ class NoteViewModel @Inject constructor(
 
                         }
                   }
-
                   Log.d("SE ACTUALIZO","--------")
               }
                 }
@@ -116,6 +115,15 @@ class NoteViewModel @Inject constructor(
                     )
                 }
             }
+            is NoteEvent.FotoCamaraCambio -> {
+                Log.d("EVENTOCAMARACAMBIO",event.value.toString()+"")
+                _state.update {
+                    it.copy(
+                        fotoC = event.value
+                    )
+                }
+            }
+
 
             is NoteEvent.TitleChange -> {
                 _state.update {

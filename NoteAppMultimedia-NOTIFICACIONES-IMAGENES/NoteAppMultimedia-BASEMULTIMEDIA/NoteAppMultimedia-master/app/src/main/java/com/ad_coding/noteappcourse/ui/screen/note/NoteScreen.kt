@@ -111,7 +111,7 @@ fun NoteScreen(
             ) {
 
                 MultimediaPicker(onEvent,state)
-                CameraButton()
+                CameraButton(onEvent,state)
 
                 DatePickerFecha(estadoFecha,onEvent)
             }

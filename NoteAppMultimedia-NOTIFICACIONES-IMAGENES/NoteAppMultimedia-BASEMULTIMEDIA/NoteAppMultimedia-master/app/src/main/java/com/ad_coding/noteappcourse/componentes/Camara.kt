@@ -37,12 +37,17 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.ui.PlayerView
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
+import com.ad_coding.noteappcourse.ui.screen.note.NoteEvent
+import com.ad_coding.noteappcourse.ui.screen.note.NoteState
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import java.io.IOException
 
     @Composable
-fun CameraButton() {
+fun CameraButton(
+        onEvent: (NoteEvent) -> Unit,
+        state: NoteState,
+) {
     Log.d("INICIOCAMARA","------------------")
         var URI : String =""
         var FotosUris by remember { mutableStateOf<List<String>>(listOf()) }
@@ -51,15 +56,18 @@ fun CameraButton() {
     var showDeleteDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
         var BitAñadir   by remember { mutableStateOf<Bitmap?>(null) }
-
+        Log.d("STATEFOTOCAMARA",state.fotoC.toString()+"---------")
+    FotosUris = state.fotoC
 
     val openCamera = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
     ) { bitmap ->
         if (bitmap) {
             val uris = mutableListOf<String>()
-            uris.add(URI)
-            FotosUris = uris
+            //uris.add(URI)
+           // FotosUris = uris
+            Log.d("EVENTOFOTOCAMB","---------")
+            onEvent(NoteEvent.FotoCamaraCambio(listOf(URI)+FotosUris))
             Log.d("FOTOSURIS",FotosUris.toString()+"--SE GUARDO-------")
             Log.d("GUARDARFOTO","--SE GUARDO-------")
 
@@ -83,16 +91,16 @@ fun CameraButton() {
            val uri = ComposeFileProvider.getImageUri(context)
             Log.d("URI",uri.toString())
             URI = uri.toString()
-            openCameraP.launch(null)
+            openCamera.launch(uri)
             Log.d("GUARDARFOTO","---ONCLICK------")
 
         }) {
             Icon(Icons.Filled.CameraAlt, contentDescription = "Abrir cámara")
         }
        // Dibujar(uri = URI)
-        Log.d("URIARCHIVO",URI.toString()+"")
+        FotosUris = state.fotoC
         LazyColumn(modifier = Modifier.height(150.dp)) {
-            Log.d("URIARCHIVOLAZY",URI.toString()+"")
+            Log.d("URIARCHIVOLAZY",FotosUris.toString()+"")
             items(FotosUris) { bitmap ->
                /* Image(
                     bitmap = bitmap.asImageBitmap(),
@@ -106,7 +114,7 @@ fun CameraButton() {
                         }
                 )*/
                 Image(
-                    painter = rememberAsyncImagePainter(model = Uri.parse(URI)),
+                    painter = rememberAsyncImagePainter(model = Uri.parse(bitmap)),
                     contentDescription = null,
                     modifier = Modifier
                         .width(100.dp)

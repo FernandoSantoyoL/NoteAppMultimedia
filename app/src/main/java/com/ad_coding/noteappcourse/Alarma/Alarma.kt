@@ -50,7 +50,7 @@ class AlarmSchedulerImpl(
 ) : AlarmScheduler{
 
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    //private val alarmManager = context.getSystemService(AlarmManager::class.java) as AlarmManager
+    //private val alarmManager = context.getSystemService(AlarmManager::class.java) as  AlarmManager
 
     override fun schedule(alarmItem: AlarmItem) {
         val intent = Intent(context, Alarma::class.java).apply {

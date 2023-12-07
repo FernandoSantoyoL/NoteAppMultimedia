@@ -3,6 +3,7 @@
 
 package com.ad_coding.noteappcourse.ui.screen.note
 
+import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,20 +28,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.ad_coding.noteappcourse.Alarma.AlarmItem
+import com.ad_coding.noteappcourse.Alarma.AlarmScheduler
+import com.ad_coding.noteappcourse.ViewModel.EstadoFecha
 import com.ad_coding.noteappcourse.componentes.AudioRecorderButton
 import com.ad_coding.noteappcourse.componentes.BotonD
 import com.ad_coding.noteappcourse.componentes.CameraButton
 import com.ad_coding.noteappcourse.componentes.DatePickerFecha
 import com.ad_coding.noteappcourse.componentes.MultimediaPicker
+import java.time.LocalDateTime
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 
 fun NoteScreen(
+    estadoFecha: EstadoFecha,
+    alarmScheduler: AlarmScheduler,
     state: NoteState,
     onEvent: (NoteEvent) -> Unit,
 ) {
+
+    var alarma: AlarmItem? =null
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -85,7 +95,7 @@ fun NoteScreen(
             ) {
                 MultimediaPicker(onEvent)
                 CameraButton()
-                DatePickerFecha(onEvent)
+                DatePickerFecha(estadoFecha,onEvent)
             }
             AudioRecorderButton()
             OutlinedTextField(
@@ -111,7 +121,31 @@ fun NoteScreen(
             ) {
 
                 Button(
-                    onClick = { onEvent(NoteEvent.Save) },
+                    onClick = {
+                        alarma =
+                            AlarmItem(
+                                LocalDateTime.parse(estadoFecha.estadoFecha),
+                                message = "Hola tienes una tarea pendiente"
+                            )
+                        alarma = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            AlarmItem(
+                                LocalDateTime.parse(estadoFecha.estadoFecha),
+                                "Tienes una tarea pendiente"
+                            )
+                        } else {
+                            TODO("VERSION.SDK_INT < O")
+                        }
+
+                        ////////////////////////////////////////
+                        alarma?.let(alarmScheduler::schedule)
+
+
+
+
+                        onEvent(NoteEvent.Save)
+
+
+                    },
                     modifier = Modifier.fillMaxWidth(0.5f)
                 ) {
                     Text(text = "GUARDAR")

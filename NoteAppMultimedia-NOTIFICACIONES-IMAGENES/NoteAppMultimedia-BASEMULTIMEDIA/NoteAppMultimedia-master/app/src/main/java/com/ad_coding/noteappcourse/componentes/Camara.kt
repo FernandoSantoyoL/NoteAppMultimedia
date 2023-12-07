@@ -44,6 +44,8 @@ import java.io.IOException
     @Composable
 fun CameraButton() {
     Log.d("INICIOCAMARA","------------------")
+        var URI : String =""
+        var FotosUris by remember { mutableStateOf<List<String>>(listOf()) }
     var imageBitmaps by remember { mutableStateOf<List<Bitmap>>(listOf()) }
     var selectedBitmap by remember { mutableStateOf<Bitmap?>(null) }
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -52,31 +54,47 @@ fun CameraButton() {
 
 
     val openCamera = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicturePreview()
+        contract = ActivityResultContracts.TakePicture()
     ) { bitmap ->
-        if (bitmap != null) {
-            imageBitmaps = imageBitmaps + bitmap
+        if (bitmap) {
+            val uris = mutableListOf<String>()
+            uris.add(URI)
+            FotosUris = uris
+            Log.d("FOTOSURIS",FotosUris.toString()+"--SE GUARDO-------")
+            Log.d("GUARDARFOTO","--SE GUARDO-------")
+
         }
     }
+        val openCameraP = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.TakePicturePreview()
+        ) { bitmap ->
+            if (bitmap != null) {
+                openCamera.launch(Uri.parse(URI))
+                imageBitmaps = imageBitmaps + bitmap
+            }
+        }
 
-    var URI : String =""
+
+
     Column {
 
         Button(onClick = {
-            Log.d("ABRIRCAMARA","---------")
+            Log.d("ABRIRCAMARA","--ONCLICK-------")
            val uri = ComposeFileProvider.getImageUri(context)
             Log.d("URI",uri.toString())
             URI = uri.toString()
-            //openCamera.launch(null)
-            Log.d("GUARDARFOTO","---------")
+            openCameraP.launch(null)
+            Log.d("GUARDARFOTO","---ONCLICK------")
 
         }) {
             Icon(Icons.Filled.CameraAlt, contentDescription = "Abrir cámara")
         }
-        //Dibujar(uri = URI)
+       // Dibujar(uri = URI)
+        Log.d("URIARCHIVO",URI.toString()+"")
         LazyColumn(modifier = Modifier.height(150.dp)) {
-            items(imageBitmaps) { bitmap ->
-                Image(
+            Log.d("URIARCHIVOLAZY",URI.toString()+"")
+            items(FotosUris) { bitmap ->
+               /* Image(
                     bitmap = bitmap.asImageBitmap(),
                     contentDescription = "Imagen capturada",
                     modifier = Modifier
@@ -86,6 +104,13 @@ fun CameraButton() {
                             selectedBitmap = bitmap
                             showDeleteDialog = true
                         }
+                )*/
+                Image(
+                    painter = rememberAsyncImagePainter(model = Uri.parse(URI)),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(100.dp)
+                        .height(150.dp)
                 )
             }
         }

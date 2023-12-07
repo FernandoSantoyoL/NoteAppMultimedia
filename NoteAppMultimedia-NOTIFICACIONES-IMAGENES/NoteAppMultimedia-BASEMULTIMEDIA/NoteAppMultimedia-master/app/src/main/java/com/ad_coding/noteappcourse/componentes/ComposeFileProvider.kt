@@ -28,12 +28,12 @@ class ComposeFileProvider : FileProvider(
             val authority = context.packageName + ".fileprovider"
             // 4
 
-            return Uri.fromFile(file)
-        /*getUriForFile(
+            return getUriForFile(
                 context,
                 authority,
                 file,
-            )*/
+            )
+            //Uri.fromFile(file)
         }
     }
 }

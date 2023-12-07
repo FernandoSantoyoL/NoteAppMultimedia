@@ -44,7 +44,7 @@
 
         <provider
             android:name=".componentes.ComposeFileProvider"
-            android:authorities="com.ad_coding.noteappcourse.componentes.fileprovider"
+            android:authorities="com.ad_coding.noteappcourse.fileprovider"
             android:grantUriPermissions="true"
             android:exported="false">
             <meta-data

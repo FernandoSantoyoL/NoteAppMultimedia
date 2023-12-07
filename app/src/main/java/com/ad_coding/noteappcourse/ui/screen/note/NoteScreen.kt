@@ -50,7 +50,7 @@ fun NoteScreen(
     onEvent: (NoteEvent) -> Unit,
 ) {
 
-    var alarma: AlarmItem? =null
+    var alarmItem: AlarmItem? =null
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -122,14 +122,14 @@ fun NoteScreen(
 
                 Button(
                     onClick = {
-                        alarma =
+                        alarmItem =
                             AlarmItem(
-                                parse(estadoFecha.estadoFecha),
+                                LocalDateTime.parse(estadoFecha.estadoFecha),
                                 message = "Hola tienes una tarea pendiente"
                             )
-                        alarma = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        alarmItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             AlarmItem(
-                                parse(estadoFecha.estadoFecha),
+                                LocalDateTime.parse(estadoFecha.estadoFecha),
                                 "Tienes una tarea pendiente"
                             )
                         } else {
@@ -137,7 +137,7 @@ fun NoteScreen(
                         }
 
                         ////////////////////////////////////////
-                        alarma?.let(alarmScheduler::schedule)
+                        alarmItem?.let(alarmScheduler::schedule)
 
                         onEvent(NoteEvent.Save)
 

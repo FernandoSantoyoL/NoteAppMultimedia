@@ -90,6 +90,8 @@ class NoteViewModel @Inject constructor(
                 repository.getNoteById(id)?.let { note ->
                     var ListaF: List<String> = listOf()
                     var ListaC: List<String> = listOf()
+
+
                     _state.update { screenState ->
                         screenState.copy(
                             id = note.id,
@@ -104,18 +106,28 @@ class NoteViewModel @Inject constructor(
                     }
                     if(note.id!=null)
                     {
+                        Log.d("---------------", "LISTAS")
+                        var lc : Flow<List<String>>
+                        lc = repository.getAllfotosCamara(note.id)
+                        var lf : Flow<List<String>>
+                        lf = repository.getAllfotos(note.id)
 
-                        var l : Flow<List<String>>
-                        l = repository.getAllfotos(note.id)
-                        l.collect { list ->
-                            ListaF = list
-                            Log.d("OBTENER FOTOSGALE",list.toString()+"")
-                            _state.update {
-                                it.copy(
-                                    fotoS = ListaF
-                                )
+                        lf.collect { listLF ->
+                            Log.d("LISTFOTOS", listLF.toString())
+                            ListaF = listLF
+
+                            lc.collect { listLC ->
+                                ListaC = listLC
+                                Log.d("OBTENER FOTOSGALE",listLC.toString()+"")
+                                _state.update {
+                                    it.copy(
+                                        fotoS = ListaF,
+                                        fotoC = ListaC
+                                    )
+                                }
                             }
                         }
+
                     }else{
                         repository.updateNote(note)
                     }

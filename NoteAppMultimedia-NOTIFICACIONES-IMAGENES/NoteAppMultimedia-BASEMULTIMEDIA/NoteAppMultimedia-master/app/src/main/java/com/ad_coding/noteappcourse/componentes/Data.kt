@@ -45,6 +45,7 @@ fun DatePickerFecha(
                     Log.d("----FORMAT----","")
                     // Formatear fecha y hora
                     val formatoFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+                    Log.d("FECHA ESTADO","")
                     estadoFecha.estadoFecha = fechaConHora.format(formatoFecha)
 
                     // Actualizar la variable 'date' y programar la alarma

@@ -70,11 +70,6 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:1.0.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
-    // MATERIAL 3
-    val m3version = "1.2.0-alpha11"
-
-    implementation("androidx.compose.material3:material3:$m3version")
-    implementation("androidx.compose.material3:material3-window-size-class:$m3version")
 
     // Runtime
     implementation("androidx.work:work-runtime-ktx:2.8.0")

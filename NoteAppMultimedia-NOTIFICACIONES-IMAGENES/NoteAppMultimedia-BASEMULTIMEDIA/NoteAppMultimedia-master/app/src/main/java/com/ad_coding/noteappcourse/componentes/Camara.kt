@@ -48,28 +48,25 @@ fun CameraButton(
         onEvent: (NoteEvent) -> Unit,
         state: NoteState,
 ) {
-    Log.d("INICIOCAMARA","------------------")
+    //Log.d("INICIOCAMARA","------------------")
         var URI : String =""
         var FotosUris by remember { mutableStateOf<List<String>>(listOf()) }
     var imageBitmaps by remember { mutableStateOf<List<Bitmap>>(listOf()) }
     var selectedBitmap by remember { mutableStateOf<Bitmap?>(null) }
     var showDeleteDialog by remember { mutableStateOf(false) }
+        var selectedUri by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
-        var BitAñadir   by remember { mutableStateOf<Bitmap?>(null) }
-        Log.d("STATEFOTOCAMARA",state.fotoC.toString()+"---------")
+       Log.d("STATEFOTOCAMARA",state.fotoC.toString()+"---------")
     FotosUris = state.fotoC
 
     val openCamera = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
     ) { bitmap ->
         if (bitmap) {
-            val uris = mutableListOf<String>()
-            //uris.add(URI)
-           // FotosUris = uris
-            Log.d("EVENTOFOTOCAMB","---------")
+        //    Log.d("EVENTOFOTOCAMB","---------")
             onEvent(NoteEvent.FotoCamaraCambio(listOf(URI)+FotosUris))
-            Log.d("FOTOSURIS",FotosUris.toString()+"--SE GUARDO-------")
-            Log.d("GUARDARFOTO","--SE GUARDO-------")
+          //  Log.d("FOTOSURIS",FotosUris.toString()+"--SE GUARDO-------")
+            //Log.d("GUARDARFOTO","--SE GUARDO-------")
 
         }
     }
@@ -82,10 +79,7 @@ fun CameraButton(
             }
         }
 
-
-
     Column {
-
         Button(onClick = {
             Log.d("ABRIRCAMARA","--ONCLICK-------")
            val uri = ComposeFileProvider.getImageUri(context)
@@ -102,23 +96,17 @@ fun CameraButton(
         LazyColumn(modifier = Modifier.height(150.dp)) {
             Log.d("URIARCHIVOLAZY",FotosUris.toString()+"")
             items(FotosUris) { bitmap ->
-               /* Image(
-                    bitmap = bitmap.asImageBitmap(),
-                    contentDescription = "Imagen capturada",
-                    modifier = Modifier
-                        .width(100.dp)
-                        .height(150.dp)
-                        .clickable {
-                            selectedBitmap = bitmap
-                            showDeleteDialog = true
-                        }
-                )*/
                 Image(
                     painter = rememberAsyncImagePainter(model = Uri.parse(bitmap)),
                     contentDescription = null,
                     modifier = Modifier
                         .width(100.dp)
                         .height(150.dp)
+                        .clickable {
+                            selectedUri = Uri.parse(bitmap)
+                            showDeleteDialog = true
+                        }
+
                 )
             }
         }

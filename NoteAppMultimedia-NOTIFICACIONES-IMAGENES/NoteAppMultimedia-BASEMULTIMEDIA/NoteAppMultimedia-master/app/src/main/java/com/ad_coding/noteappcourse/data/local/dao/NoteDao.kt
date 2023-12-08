@@ -7,12 +7,13 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.ad_coding.noteappcourse.data.local.entity.Fotos
+import com.ad_coding.noteappcourse.data.local.entity.FotosCamara
 import com.ad_coding.noteappcourse.data.local.entity.NoteEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NoteDao {
-
+//---------------NOTAS------------------------
     @Query("SELECT * FROM NoteEntity")
     fun getAllNotes(): Flow<List<NoteEntity>>
 
@@ -27,10 +28,16 @@ interface NoteDao {
 
     @Update
     suspend fun updateNote(noteEntity: NoteEntity)
-
+    //---------------FOTOS-GALERIA------------------------
     @Insert
     suspend fun insertFoto(foto: Fotos)
 
     @Query("SELECT Uri FROM Fotos WHERE idnota = :id")
     fun getAllfotos(id: Int): Flow<List<String>>
+    //---------------FOTOS-CAMARA------------------------
+    @Insert
+    suspend fun insertFotoCamara(fotoCamara: FotosCamara)
+
+    @Query("SELECT Uri FROM FotosCamara WHERE idnota = :id")
+    fun getAllfotosCamara(id: Int): Flow<List<String>>
 }

@@ -61,7 +61,7 @@ fun NoteScreen(
     estadoFecha: EstadoFecha,
     alarmScheduler: AlarmScheduler,
     state: NoteState,
-    onEvent: (NoteEvent) -> Unit,
+    onEvent: (NoteEvent) -> Unit
 
     ) {
     var alarma: AlarmItem? =null

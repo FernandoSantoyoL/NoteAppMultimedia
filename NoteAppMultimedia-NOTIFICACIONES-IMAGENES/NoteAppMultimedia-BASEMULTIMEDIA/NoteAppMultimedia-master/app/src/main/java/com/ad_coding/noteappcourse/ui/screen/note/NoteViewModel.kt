@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ad_coding.noteappcourse.data.local.entity.Fotos
+import com.ad_coding.noteappcourse.data.local.entity.FotosCamara
 import com.ad_coding.noteappcourse.domain.model.Note
 import com.ad_coding.noteappcourse.domain.repository.NoteRepository
 import com.ad_coding.noteappcourse.ui.util.UiEvent
@@ -46,7 +47,8 @@ class NoteViewModel @Inject constructor(
             val id = it.toInt()
             viewModelScope.launch {
                 repository.getNoteById(id)?.let { note ->
-                    var Lista: List<String> = listOf()
+                    var ListaF: List<String> = listOf()
+                    var ListaC: List<String> = listOf()
                     _state.update { screenState ->
                         screenState.copy(
                             id = note.id,
@@ -55,33 +57,35 @@ class NoteViewModel @Inject constructor(
                             tipo = note.tipo,
                             fecha = note.fecha,
                             foto = note.foto,
-                            fotoS = Lista
+                            fotoS = ListaF,
+                            fotoC = ListaC
                         )
                     }
-                    Log.d("SE ACTUALIZO","--NOTA--")
                     if(note.id!=null)
               {
-                  var l : Flow<List<String>>
-                  Log.d("ENTROACTUALIZAR","---"+note.id+"--------")
-                  l = repository.getAllfotos(note.id)
 
+                  var l : Flow<List<String>>
+                  l = repository.getAllfotos(note.id)
                     l.collect { list ->
-                      Lista = list
-                      Log.d("VALORESLISTA----", "Values: $list")
+                      ListaF = list
+                        Log.d("OBTENER FOTOSGALE",list.toString()+"")
                         _state.update {
                             it.copy(
-                                fotoS = Lista
+                                fotoS = ListaF
                             )
-
                         }
                   }
-                  Log.d("SE ACTUALIZO","--------")
-              }
+
+
+              }else{
+                     repository.updateNote(note)
+                    }
                 }
             }
         }
     }
-    var Uris: List<String> = listOf()
+    var Urisfotos: List<String> = listOf()
+    var UrisCamara: List<String> = listOf()
     fun onEvent(event: NoteEvent) {
         when (event) {
             is NoteEvent.ContentChange -> {
@@ -99,7 +103,7 @@ class NoteViewModel @Inject constructor(
             }
         }
             is NoteEvent.FotoCambio -> {
-               Uris =event.value
+               Urisfotos =event.value
                 _state.update {
                     it.copy(
                         fotoS = event.value
@@ -117,6 +121,7 @@ class NoteViewModel @Inject constructor(
             }
             is NoteEvent.FotoCamaraCambio -> {
                 Log.d("EVENTOCAMARACAMBIO",event.value.toString()+"")
+                UrisCamara = event.value
                 _state.update {
                     it.copy(
                         fotoC = event.value
@@ -150,21 +155,36 @@ class NoteViewModel @Inject constructor(
                    if(state.id==null){
                        val id = repository.insertNote(note)
                        if (id != null ) {
-                        if(Uris!=null)
+                        if(Urisfotos!=null)
                         {
-                            Uris.forEach{uri->
+                            Urisfotos.forEach{uri->
                                 repository.insertFoto(Fotos(0,id,uri))
-                                Log.d("SI ENTRO",uri)
+                                Log.d("SI ENTRO FOTOS",uri)
                             }
                         }
+                           Log.d("URISCAMARA",UrisCamara.toString()+"")
+                           if(UrisCamara!=null)
+                           {
+                               UrisCamara.forEach{uri->
+                                   repository.insertFotoCamara(FotosCamara(0,id.toLong(),uri))
+                                   Log.d("SI ENTRO CAMARA",uri)
+                               }
+                           }
                     }
                    } else {
                        val id = state.id
-                       if(Uris!=null)
+                       if(Urisfotos!=null)
                        {
-                           Uris.forEach{uri->
+                           Urisfotos.forEach{uri->
                                repository.insertFoto(Fotos(0, id.toLong(),uri))
-                               Log.d("SI ENTRO",uri)
+                               Log.d("SI ENTRO FOTOS",uri)
+                           }
+                       }
+                       if(UrisCamara!=null)
+                       {
+                           UrisCamara.forEach{uri->
+                               repository.insertFotoCamara(FotosCamara(0,id.toLong(),uri))
+                               Log.d("SI ENTRO CAMARA",uri)
                            }
                        }
                        Log.d("ACTUALIZAR",state.id.toString()+"")

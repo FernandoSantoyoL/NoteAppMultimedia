@@ -39,7 +39,7 @@
      var showDeleteDialog by remember { mutableStateOf(false) }
      Log.d("----INICIOMULTIMEDIA---","")
      multimediaUris = state.fotoS
-     Log.d("---MULTIMEDIA---"+state.fotoS+"------","ESTADOFOTOS-----")
+     Log.d("---MULTIMEDIA---"+state.fotoS+" ","ESTADOFOTOS-----")
      // Inicializar el ActivityResultLauncher
      val multimediaPickerLauncher = rememberLauncherForActivityResult(
          contract = ActivityResultContracts.StartActivityForResult()

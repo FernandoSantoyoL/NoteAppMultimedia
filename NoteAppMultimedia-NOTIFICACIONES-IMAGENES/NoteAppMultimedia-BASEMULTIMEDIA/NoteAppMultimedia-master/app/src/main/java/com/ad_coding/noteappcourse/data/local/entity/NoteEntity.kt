@@ -20,3 +20,12 @@ data class Fotos(
     val idNota: Long,
     val Uri: String
 )
+
+
+@Entity
+data class FotosCamara(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
+    val idNota: Long,
+    val Uri: String
+)

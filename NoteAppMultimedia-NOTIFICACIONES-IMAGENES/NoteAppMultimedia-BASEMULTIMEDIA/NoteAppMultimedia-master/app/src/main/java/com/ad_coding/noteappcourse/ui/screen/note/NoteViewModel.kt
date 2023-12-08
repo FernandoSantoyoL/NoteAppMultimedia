@@ -2,6 +2,10 @@ package com.ad_coding.noteappcourse.ui.screen.note
 
 import android.util.Log
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -41,7 +45,44 @@ class NoteViewModel @Inject constructor(
             _event.send(event)
         }
     }
+    var ListaF: List<String> = listOf()
+    var ListaC: List<String> = listOf()
+/*
+    init {
+        savedStateHandle.get<String>("id")?.let {
+            val id = it.toInt()
+            viewModelScope.launch {
+                repository.getNoteById(id)?.let { note ->
+                Log.d("NOTAID",note.id.toString())
+                    if(note.id!=null)
+                    {/*
+                     */
+                        var lf : Flow<List<String>>
+                        lf = repository.getAllfotos(note.id)
+                        lf.collect { list ->
+                            Log.d("LISTFOTOS", list.toString())
+                            ListaF = list
 
+                            _state.update {
+                                it.copy(
+                                    id = note.id,
+                                    title = note.title,
+                                    content = note.content,
+                                    tipo = note.tipo,
+                                    fecha = note.fecha,
+                                    foto = note.foto,
+                                    fotoS = ListaF,
+                                    fotoC = ListaC
+                                )
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+*/
     init {
         savedStateHandle.get<String>("id")?.let {
             val id = it.toInt()
@@ -62,28 +103,27 @@ class NoteViewModel @Inject constructor(
                         )
                     }
                     if(note.id!=null)
-              {
+                    {
 
-                  var l : Flow<List<String>>
-                  l = repository.getAllfotos(note.id)
-                    l.collect { list ->
-                      ListaF = list
-                        Log.d("OBTENER FOTOSGALE",list.toString()+"")
-                        _state.update {
-                            it.copy(
-                                fotoS = ListaF
-                            )
+                        var l : Flow<List<String>>
+                        l = repository.getAllfotos(note.id)
+                        l.collect { list ->
+                            ListaF = list
+                            Log.d("OBTENER FOTOSGALE",list.toString()+"")
+                            _state.update {
+                                it.copy(
+                                    fotoS = ListaF
+                                )
+                            }
                         }
-                  }
-
-
-              }else{
-                     repository.updateNote(note)
+                    }else{
+                        repository.updateNote(note)
                     }
                 }
             }
         }
     }
+
     var Urisfotos: List<String> = listOf()
     var UrisCamara: List<String> = listOf()
     fun onEvent(event: NoteEvent) {
@@ -206,7 +246,10 @@ class NoteViewModel @Inject constructor(
                         fecha= state.fecha,
                         foto = state.foto
                     )
-                    repository.deleteNote(note)
+                    if(state.id!=null)
+                    {
+                        repository.deleteNote(state.id)
+                    }
                 }
                 sendEvent(UiEvent.NavigateBack)
             }

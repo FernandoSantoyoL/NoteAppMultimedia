@@ -30,8 +30,8 @@ class NoteRepositoryImpl(
     override suspend fun insertNote(note: Note):Long {
         return dao.insertNote(note.toEntity())
     }
-    override suspend fun deleteNote(note: Note) {
-        dao.deleteNote(note.toEntity())
+    override suspend fun deleteNote(id: Int) {
+        dao.deleteNote(id)
     }
 
     override suspend fun updateNote(note: Note) {
@@ -47,7 +47,7 @@ class NoteRepositoryImpl(
     }
     //---------------FOTOS-CAMARA-----------------------
     override  fun getAllfotosCamara( id: Int): Flow<List<String>> {
-        return dao.getAllfotos(id)
+        return dao.getAllfotosCamara(id)
 
     }
     override suspend fun insertFotoCamara(foto:FotosCamara) {

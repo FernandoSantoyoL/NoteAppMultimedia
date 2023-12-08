@@ -26,8 +26,6 @@ fun DatePickerFecha(
     val year = calendar.get(Calendar.YEAR)
     val month = calendar.get(Calendar.MONTH)
     val day = calendar.get(Calendar.DAY_OF_MONTH)
-    val H=calendar.get(Calendar.HOUR)
-    val M=calendar.get(Calendar.MINUTE)
     var date by remember { mutableStateOf("${day}/${month + 1}/${year}") }
     Log.d("----FECHA----",""+date)
     Column {
@@ -36,18 +34,20 @@ fun DatePickerFecha(
                 // Guardar la fecha seleccionada temporalmente
                 val fechaTemporal =
                     LocalDateTime.of(selectedYear, selectedMonth + 1, selectedDayOfMonth, 0, 0)
-                Log.d("----FECHA----","TEMPORAL"+fechaTemporal)
+               // Log.d("----FECHA----","TEMPORAL"+fechaTemporal)
                 // Abrir TimePickerDialog después de seleccionar la fecha
                 TimePickerDialog(context, { _, hourOfDay, minute ->
                     // Combinar fecha y hora
-                    Log.d("----FECHA----","")
+                   // Log.d("----FECHA----","")
                     val fechaConHora = fechaTemporal.withHour(hourOfDay).withMinute(minute)
-                    Log.d("----FORMAT----","")
+                    //Log.d("----FORMAT----",fechaConHora.toString()+"")
                     // Formatear fecha y hora
                     val formatoFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
-                    Log.d("FECHA ESTADO","")
-                    estadoFecha.estadoFecha = fechaConHora.format(formatoFecha)
 
+                    estadoFecha.estadoFecha = fechaConHora.toString()
+                    Log.d("FECHA ESTADO",estadoFecha.estadoFecha.toString()+"")
+                    estadoFecha.estadoFecha = fechaConHora.format(formatoFecha)
+                    Log.d("FECHA ESTADO","FORMAT"+estadoFecha.estadoFecha.toString()+"")
                     // Actualizar la variable 'date' y programar la alarma
                     date = fechaConHora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
 

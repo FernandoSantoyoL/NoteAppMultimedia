@@ -72,7 +72,7 @@
          }
 
          LazyColumn(modifier = Modifier.height(150.dp)) {
-             Log.d("ITEMS SELE",multimediaUris.toString()+"---------")
+             Log.d("ITEMS MULTIMEDIA",multimediaUris.toString()+"---------")
              items(multimediaUris) { uri ->
                  Image(
                      painter = rememberAsyncImagePainter(model = Uri.parse(uri)),

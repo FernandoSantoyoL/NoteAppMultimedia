@@ -55,9 +55,9 @@ fun CameraButton(
     var selectedBitmap by remember { mutableStateOf<Bitmap?>(null) }
     var showDeleteDialog by remember { mutableStateOf(false) }
         var selectedUri by remember { mutableStateOf<Uri?>(null) }
-    val context = LocalContext.current
-       Log.d("STATEFOTOCAMARA",state.fotoC.toString()+"---------")
-    FotosUris = state.fotoC
+        val context = LocalContext.current
+        Log.d("STATEFOTOCAMARA",state.fotoC.toString()+"---------")
+        FotosUris = state.fotoC
 
     val openCamera = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
@@ -65,6 +65,7 @@ fun CameraButton(
         if (bitmap) {
         //    Log.d("EVENTOFOTOCAMB","---------")
             onEvent(NoteEvent.FotoCamaraCambio(listOf(URI)+FotosUris))
+            FotosUris = state.fotoC
           //  Log.d("FOTOSURIS",FotosUris.toString()+"--SE GUARDO-------")
             //Log.d("GUARDARFOTO","--SE GUARDO-------")
 

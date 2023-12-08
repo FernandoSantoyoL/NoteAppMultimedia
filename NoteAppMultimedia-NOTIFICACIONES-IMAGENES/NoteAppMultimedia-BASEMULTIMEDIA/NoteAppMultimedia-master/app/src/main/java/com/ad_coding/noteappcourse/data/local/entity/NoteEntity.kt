@@ -29,3 +29,18 @@ data class FotosCamara(
     val idNota: Long,
     val Uri: String
 )
+@Entity
+data class Audio(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
+    val idNota: Long,
+    val Uri: String
+)
+
+@Entity
+data class Videos(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
+    val idNota: Long,
+    val Uri: String
+)

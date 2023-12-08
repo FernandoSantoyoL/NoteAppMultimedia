@@ -3,6 +3,7 @@ package com.ad_coding.noteappcourse.componentes
 import android.Manifest
 import android.media.MediaPlayer
 import android.media.MediaRecorder
+import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -39,14 +40,9 @@ fun AudioRecorderButton(
     val mediaPlayer = MediaPlayer()
     var audioFiles by remember { mutableStateOf(listOf<File>()) }
     var audioUris by remember { mutableStateOf<List<String>>(listOf()) }//state.audioUris
-
+    Log.d("STATE-URIS-A", state.Audios.toString())
     audioUris =state.Audios
-    if(audioUris!=null)
-    {
-        audioUris.forEach {
-            audioFiles.plus(File(it))
-        }
-    }
+
 
 
     val getNextAudioFile: () -> File = {
@@ -55,8 +51,9 @@ fun AudioRecorderButton(
 
     val startRecording = {
         val audioFile = getNextAudioFile()
-        audioUris.plus(audioFile.toString())
-        Log.d("ARCHIVOURI",audioUris.toString())
+        Log.d("ARCHIVOURI", Uri.parse(audioFile.toString()).toString())
+        audioUris = audioUris + Uri.parse(audioFile.toString()).toString()
+        Log.d("AUDIOURIS",audioUris.toString())
         onEvent(NoteEvent.AudioCambio(audioUris))
         Log.d("AudioRecorder", "Intentando iniciar la grabación")
         try {
@@ -130,12 +127,21 @@ fun AudioRecorderButton(
                 Icon(Icons.Filled.Mic, contentDescription = "Iniciar Grabación", tint = Color.Black)
             }
         }
+        audioUris =state.Audios
 
+        Log.d("AUDIOURIS", audioUris.toString())
+        if(audioUris != null)
+        {
+            audioUris.forEach {
+                audioFiles = audioFiles + File(it)
+            }
+        }
+        Log.d("AUDIOFILES", audioFiles.toString())
         audioFiles.forEachIndexed { index, audioFile ->
             Row(modifier = Modifier.padding(vertical = 4.dp)) {
                 Button(onClick = { startPlaying(audioFile) }) {
                     Text("Audio ${index + 1}")
-                    Log.d("ARCHIVO",mediaRecorder.toString())
+                    //Log.d("ARCHIVO",mediaRecorder.toString())
                     //Log.d("URI",audioFile.absolutePath)
                 }
                 IconButton(onClick = {

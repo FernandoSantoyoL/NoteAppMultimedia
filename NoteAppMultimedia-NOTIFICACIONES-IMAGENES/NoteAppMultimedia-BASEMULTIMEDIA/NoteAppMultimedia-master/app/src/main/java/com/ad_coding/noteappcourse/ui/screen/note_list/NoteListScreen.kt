@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 import androidx.compose.ui.unit.dp
+import com.ad_coding.noteappcourse.componentes.BotonD
 import com.ad_coding.noteappcourse.componentes.NotaItem
 import com.ad_coding.noteappcourse.domain.model.Note
 
@@ -29,6 +30,7 @@ fun NoteListScreen(
     onAddNoteClick: () -> Unit
 ) {
     Scaffold(
+
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onAddNoteClick,
@@ -41,7 +43,9 @@ fun NoteListScreen(
         }
     ) {
         Column(
-            modifier = Modifier.padding(it).fillMaxSize()
+            modifier = Modifier
+                .padding(it)
+                .fillMaxSize()
         ) {
            // BotonD()
             LazyColumn(

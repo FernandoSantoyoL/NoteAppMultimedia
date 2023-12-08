@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ad_coding.noteappcourse.data.local.entity.Audio
 import com.ad_coding.noteappcourse.data.local.entity.Fotos
 import com.ad_coding.noteappcourse.data.local.entity.FotosCamara
 import com.ad_coding.noteappcourse.domain.model.Note
@@ -54,38 +55,42 @@ class NoteViewModel @Inject constructor(
                     var ListaF: List<String> = listOf()
                     var ListaC: List<String> = listOf()
                     var Audios: List<String> = listOf()
-                    _state.update { screenState ->
-                        screenState.copy(
-                            id = note.id,
-                            title = note.title,
-                            content = note.content,
-                            tipo = note.tipo,
-                            fecha = note.fecha,
-                            foto = note.foto,
-                            fotoS = ListaF,
-                            fotoC = ListaC
-                        )
-                    }
+
                     if(note.id!=null)
                     {
                         Log.d("---------------", "LISTAS")
                         var lc : Flow<List<String>>
                         lc = repository.getAllfotosCamara(note.id)
+                        Log.d("-LISTA-CAMARA---------", lc.toString())
                         var lf : Flow<List<String>>
                         lf = repository.getAllfotos(note.id)
+                        Log.d("-LISTA-FOTO---------", lf.toString())
+                        var lA : Flow<List<String>>
+                        lA = repository.getAllaudio(note.id)
+                        Log.d("-LISTA-AUDIO---------", lA.toString())
 
                         lf.collect { listLF ->
                             Log.d("LISTFOTOS", listLF.toString())
                             ListaF = listLF
-
                             lc.collect { listLC ->
                                 ListaC = listLC
-                                Log.d("OBTENER FOTOSGALE",listLC.toString()+"")
-                                _state.update {
-                                    it.copy(
-                                        fotoS = ListaF,
-                                        fotoC = ListaC
-                                    )
+                                Log.d("OBTENER FOTOSGALE",listLC.toString())
+                                  lA.collect { listA ->
+                                    Audios = listA
+                                      Log.d("OBTENER AUDIOS",listA.toString())
+                                      _state.update { screenState ->
+                                          screenState.copy(
+                                              id = note.id,
+                                              title = note.title,
+                                              content = note.content,
+                                              tipo = note.tipo,
+                                              fecha = note.fecha,
+                                              foto = note.foto,
+                                              fotoS = ListaF,
+                                              fotoC = ListaC,
+                                              Audios = Audios
+                                          )
+                                      }
                                 }
                             }
                         }
@@ -179,6 +184,7 @@ class NoteViewModel @Inject constructor(
                     Log.d("INSERTAREDITAR",state.id.toString()+"")
                    if(state.id==null){
                        val id = repository.insertNote(note)
+                       Log.d("IDNOTANUEVA",id.toString()+"")
                        if (id != null ) {
                         if(Urisfotos!=null)
                         {
@@ -193,6 +199,14 @@ class NoteViewModel @Inject constructor(
                                UrisCamara.forEach{uri->
                                    repository.insertFotoCamara(FotosCamara(0,id.toLong(),uri))
                                    Log.d("SI ENTRO CAMARA",uri)
+                               }
+                           }
+                           Log.d("URISAUDIO",UrisCamara.toString()+"")
+                           if(UrisAudio!=null)
+                           {
+                               UrisAudio.forEach{uri->
+                                   repository.insertAudio(Audio(0,id.toLong(),uri))
+                                   Log.d("SI ENTRO AUDIOS",uri)
                                }
                            }
                     }
@@ -210,6 +224,13 @@ class NoteViewModel @Inject constructor(
                            UrisCamara.forEach{uri->
                                repository.insertFotoCamara(FotosCamara(0,id.toLong(),uri))
                                Log.d("SI ENTRO CAMARA",uri)
+                           }
+                       }
+                       if(UrisAudio!=null)
+                       {
+                           UrisCamara.forEach{uri->
+                               repository.insertAudio(Audio(0,id.toLong(),uri))
+                               Log.d("SI ENTRO AUDIOS",uri)
                            }
                        }
                        Log.d("ACTUALIZAR",state.id.toString()+"")

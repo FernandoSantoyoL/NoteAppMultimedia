@@ -58,13 +58,13 @@ import java.time.LocalDateTime
 @Composable
 
 fun NoteScreen(
+    state: NoteState,
     estadoFecha: EstadoFecha,
     alarmScheduler: AlarmScheduler,
-    state: NoteState,
     onEvent: (NoteEvent) -> Unit
 
     ) {
-    var alarma: AlarmItem? =null
+
 
     Scaffold(modifier = Modifier.verticalScroll(rememberScrollState()),
         topBar = {
@@ -113,7 +113,7 @@ fun NoteScreen(
                 MultimediaPicker(onEvent,state)
                 CameraButton(onEvent,state)
 
-                DatePickerFecha(estadoFecha,onEvent)
+                DatePickerFecha(estadoFecha,onEvent,alarmScheduler)
             }
             Row {
                 AudioRecorderButton(onEvent,state)
@@ -146,21 +146,7 @@ fun NoteScreen(
             ) {
                 Button(
                     onClick = {
-                        alarma =
-                            AlarmItem(
-                                LocalDateTime.parse(estadoFecha.estadoFecha),
-                                message = "Hola tienes una tarea pendiente"
-                            )
-                        alarma = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            AlarmItem(
-                                LocalDateTime.parse(estadoFecha.estadoFecha),
-                                "Tienes una tarea pendiente"
-                            )
-                        } else {
-                            TODO("VERSION.SDK_INT < O")
-                        }
-                        ////////////////////////////////////////
-                        alarma?.let(alarmScheduler::schedule)
+                        Log.d("GUARDAR","--------------------------")
                         onEvent(NoteEvent.Save)
                     },
                     modifier = Modifier.fillMaxWidth(0.5f)

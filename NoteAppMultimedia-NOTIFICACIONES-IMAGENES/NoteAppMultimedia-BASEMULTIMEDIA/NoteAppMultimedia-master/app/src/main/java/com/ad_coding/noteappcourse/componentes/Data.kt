@@ -4,12 +4,15 @@ import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import com.ad_coding.noteappcourse.Alarma.AlarmItem
+import com.ad_coding.noteappcourse.Alarma.AlarmScheduler
 import com.ad_coding.noteappcourse.ui.screen.note.NoteEvent
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -20,7 +23,9 @@ import java.util.*
 fun DatePickerFecha(
     estadoFecha: EstadoFecha,
     onEvent: (NoteEvent) -> Unit,
+    alarmScheduler: AlarmScheduler,
 ) {
+    var alarma: AlarmItem? =null
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR)
@@ -50,18 +55,34 @@ fun DatePickerFecha(
                     Log.d("FECHA ESTADO","FORMAT"+estadoFecha.estadoFecha.toString()+"")
                     // Actualizar la variable 'date' y programar la alarma
                     date = fechaConHora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
-
+                    alarma =
+                        AlarmItem(
+                            LocalDateTime.parse(fechaConHora.format(formatoFecha)),
+                            message = "Hola tienes una tarea pendiente"
+                        )
+                    alarma = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        AlarmItem(
+                            LocalDateTime.parse(fechaConHora.format(formatoFecha)),
+                            "Tienes una tarea pendiente"
+                        )
+                    } else {
+                        TODO("VERSION.SDK_INT < O")
+                    }
+                    ////////////////////////////////////////
+                    alarma?.let(alarmScheduler::schedule)
 
                 }, fechaTemporal.hour, fechaTemporal.minute, true).show()
 
             }, year, month, day).show()
-
-        }) {
+        }
+        ) {
             Text("Fecha")
         }
 
         Text(text = "Fecha: $date")
+
         onEvent(NoteEvent.FechaCambio(date))
+        Log.d("----FECHA----",""+date)
 
     }
 

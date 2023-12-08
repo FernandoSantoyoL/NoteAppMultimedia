@@ -72,10 +72,11 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         }
+                        val alarmScheduler = AlarmSchedulerImpl(applicationContext)
                         NoteScreen(
-                            estadoFecha,
-                            alarmScheduler = AlarmSchedulerImpl(applicationContext),
                             state = state,
+                            estadoFecha,
+                            alarmScheduler,
                             onEvent = viewModel::onEvent
                         )
                     }

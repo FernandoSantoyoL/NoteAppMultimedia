@@ -116,7 +116,7 @@ fun NoteScreen(
                 DatePickerFecha(estadoFecha,onEvent)
             }
             Row {
-                AudioRecorderButton()
+                AudioRecorderButton(onEvent,state)
                 GalleryVideoPicker()
             }
 

@@ -7,6 +7,7 @@ sealed interface NoteEvent {
     data class FechaCambio(val value: String): NoteEvent
     data class FotoCambio(val value: List<String>): NoteEvent
     data class FotoCamaraCambio(val value: List<String>): NoteEvent
+    data class AudioCambio(val value: List<String>): NoteEvent
 
     object Save : NoteEvent
     object NavigateBack : NoteEvent

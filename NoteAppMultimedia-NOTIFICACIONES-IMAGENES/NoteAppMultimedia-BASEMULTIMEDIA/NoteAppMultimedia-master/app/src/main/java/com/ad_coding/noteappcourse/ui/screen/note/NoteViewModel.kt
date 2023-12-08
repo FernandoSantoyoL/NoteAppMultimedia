@@ -45,44 +45,7 @@ class NoteViewModel @Inject constructor(
             _event.send(event)
         }
     }
-    var ListaF: List<String> = listOf()
-    var ListaC: List<String> = listOf()
-/*
-    init {
-        savedStateHandle.get<String>("id")?.let {
-            val id = it.toInt()
-            viewModelScope.launch {
-                repository.getNoteById(id)?.let { note ->
-                Log.d("NOTAID",note.id.toString())
-                    if(note.id!=null)
-                    {/*
-                     */
-                        var lf : Flow<List<String>>
-                        lf = repository.getAllfotos(note.id)
-                        lf.collect { list ->
-                            Log.d("LISTFOTOS", list.toString())
-                            ListaF = list
 
-                            _state.update {
-                                it.copy(
-                                    id = note.id,
-                                    title = note.title,
-                                    content = note.content,
-                                    tipo = note.tipo,
-                                    fecha = note.fecha,
-                                    foto = note.foto,
-                                    fotoS = ListaF,
-                                    fotoC = ListaC
-                                )
-                            }
-                        }
-
-                    }
-                }
-            }
-        }
-    }
-*/
     init {
         savedStateHandle.get<String>("id")?.let {
             val id = it.toInt()
@@ -90,8 +53,7 @@ class NoteViewModel @Inject constructor(
                 repository.getNoteById(id)?.let { note ->
                     var ListaF: List<String> = listOf()
                     var ListaC: List<String> = listOf()
-
-
+                    var Audios: List<String> = listOf()
                     _state.update { screenState ->
                         screenState.copy(
                             id = note.id,
@@ -138,12 +100,24 @@ class NoteViewModel @Inject constructor(
 
     var Urisfotos: List<String> = listOf()
     var UrisCamara: List<String> = listOf()
+    var UrisAudio: List<String> = listOf()
+    var UrisVideo:  List<String> = listOf()
+
     fun onEvent(event: NoteEvent) {
         when (event) {
             is NoteEvent.ContentChange -> {
                 _state.update {
                     it.copy(
                         content = event.value
+                    )
+                }
+            }
+            is NoteEvent.AudioCambio -> {
+                Log.d("EVENTO-AUDIOCAMBIO",event.value.toString()+"")
+                UrisAudio=event.value
+                _state.update {
+                    it.copy(
+                        Audios = event.value
                     )
                 }
             }
@@ -172,7 +146,6 @@ class NoteViewModel @Inject constructor(
                 }
             }
             is NoteEvent.FotoCamaraCambio -> {
-                Log.d("EVENTOCAMARACAMBIO",event.value.toString()+"")
                 UrisCamara = event.value
                 _state.update {
                     it.copy(

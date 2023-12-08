@@ -22,18 +22,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.ad_coding.noteappcourse.ui.screen.note.NoteEvent
+import com.ad_coding.noteappcourse.ui.screen.note.NoteState
 import java.io.File
 
 @Composable
-fun AudioRecorderButton() {
+fun AudioRecorderButton(
+    onEvent: (NoteEvent) -> Unit,
+    state: NoteState,
+) {
     val context = LocalContext.current
     var isRecording by remember { mutableStateOf(false) }
     var hasPermission by remember { mutableStateOf(false) }
     var isPlaying by remember { mutableStateOf(false) }
     val mediaRecorder = remember { MediaRecorder() }
     val mediaPlayer = MediaPlayer()
-
     var audioFiles by remember { mutableStateOf(listOf<File>()) }
+    var audioUris by remember { mutableStateOf<List<String>>(listOf()) }//state.audioUris
+
+    audioUris =state.Audios
+    if(audioUris!=null)
+    {
+        audioUris.forEach {
+            audioFiles.plus(File(it))
+        }
+    }
+
 
     val getNextAudioFile: () -> File = {
         File(context.externalCacheDir, "audio_recording_${audioFiles.size + 1}.3gp")
@@ -41,6 +55,9 @@ fun AudioRecorderButton() {
 
     val startRecording = {
         val audioFile = getNextAudioFile()
+        audioUris.plus(audioFile.toString())
+        Log.d("ARCHIVOURI",audioUris.toString())
+        onEvent(NoteEvent.AudioCambio(audioUris))
         Log.d("AudioRecorder", "Intentando iniciar la grabación")
         try {
             mediaRecorder.apply {
@@ -118,6 +135,8 @@ fun AudioRecorderButton() {
             Row(modifier = Modifier.padding(vertical = 4.dp)) {
                 Button(onClick = { startPlaying(audioFile) }) {
                     Text("Audio ${index + 1}")
+                    Log.d("ARCHIVO",mediaRecorder.toString())
+                    //Log.d("URI",audioFile.absolutePath)
                 }
                 IconButton(onClick = {
                     audioFiles = audioFiles.filter { it != audioFile }

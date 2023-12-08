@@ -6,9 +6,11 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.ad_coding.noteappcourse.data.local.entity.Audio
 import com.ad_coding.noteappcourse.data.local.entity.Fotos
 import com.ad_coding.noteappcourse.data.local.entity.FotosCamara
 import com.ad_coding.noteappcourse.data.local.entity.NoteEntity
+import com.ad_coding.noteappcourse.data.local.entity.Videos
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -41,4 +43,14 @@ interface NoteDao {
 
     @Query("SELECT Uri FROM FotosCamara WHERE idnota = :id")
     fun getAllfotosCamara(id: Int): Flow<List<String>>
+
+    //--------------AUDIOS-------------------//
+    @Insert
+    suspend fun insertAudio(audio:Audio)
+
+    @Query("SELECT Uri FROM Audio WHERE idnota = :id")
+    fun getAllaudio(id: Int): Flow<List<String>>
+    //-------------------VIDEO-----------------//
+
+
 }

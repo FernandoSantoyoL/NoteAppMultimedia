@@ -66,19 +66,10 @@ fun CameraButton(
         //    Log.d("EVENTOFOTOCAMB","---------")
             onEvent(NoteEvent.FotoCamaraCambio(listOf(URI)+FotosUris))
             FotosUris = state.fotoC
-          //  Log.d("FOTOSURIS",FotosUris.toString()+"--SE GUARDO-------")
-            //Log.d("GUARDARFOTO","--SE GUARDO-------")
 
         }
     }
-        val openCameraP = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.TakePicturePreview()
-        ) { bitmap ->
-            if (bitmap != null) {
-                openCamera.launch(Uri.parse(URI))
-                imageBitmaps = imageBitmaps + bitmap
-            }
-        }
+
 
     Column {
         Button(onClick = {

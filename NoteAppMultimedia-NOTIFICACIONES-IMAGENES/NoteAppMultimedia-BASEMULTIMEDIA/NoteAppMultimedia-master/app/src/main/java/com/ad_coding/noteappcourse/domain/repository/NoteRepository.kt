@@ -1,5 +1,6 @@
 package com.ad_coding.noteappcourse.domain.repository
 
+import com.ad_coding.noteappcourse.data.local.entity.Audio
 import com.ad_coding.noteappcourse.data.local.entity.Fotos
 import com.ad_coding.noteappcourse.data.local.entity.FotosCamara
 import com.ad_coding.noteappcourse.domain.model.Note
@@ -26,5 +27,9 @@ interface NoteRepository {
     suspend fun insertFotoCamara(fotos: FotosCamara)
 
     fun getAllfotosCamara(id: Int): Flow<List<String>>
-    //--------------------------------------
+    //---------------AUDIO-----------------------
+    suspend fun insertAudio(audios: Audio)
+
+    fun getAllaudio(id: Int): Flow<List<String>>
+    //---------------VIDEO-----------------------
 }
